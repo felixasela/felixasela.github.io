@@ -13,9 +13,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <main class="form-container">
-        <h2>¿Requieres apoyo jurídico?</h2>
-        <h1>Ponte en contacto con nosotros</h1>
+    <div class="page-wrapper">
+        <!-- Logo on the light gray area -->
+        <div class="logo-container">
+            <img src="https://legalshield.com.co/wp-content/uploads/2024/12/logo-principal-legal-shield-color.avif" alt="Legal Shield Logo" class="brand-logo">
+        </div>
+
+        <!-- Blue Form Card -->
+        <main class="form-card">
+            <h2>¿Requieres apoyo jurídico?</h2>
+            <h1>Ponte en contacto con nosotros</h1>
 
         <form id="contactForm" class="contact-form">
             <!-- Full Width Field -->
@@ -50,24 +57,24 @@
             <div class="form-group">
                 <select name="servicio" required>
                     <option value="" disabled selected>Selecciona el servicio</option>
-                    <option value="Auditoría de cumplimiento">Auditoría de cumplimiento</option>
-                    <option value="Política de datos">Política de datos</option>
-                    <option value="Asesoría Jurídica">Asesoría Jurídica</option>
-                    <option value="Otros">Otros</option>
+                    <option value="Derecho Empresarial">Derecho Empresarial</option>
+                    <option value="Programas de Cumplimiento">Programas de Cumplimiento</option>
+                    <option value="Derecho Digital">Derecho Digital</option>
+                    <option value="Otro">Otro</option>
                 </select>
                 <i class="fa-solid fa-layer-group"></i>
             </div>
 
             <!-- Full Width Field -->
             <div class="form-group full-width">
-                <textarea name="mensaje" placeholder="Cuéntanos brevemente tu necesidad (ej. auditoria de cumplimiento, política de datos, etc.)" required></textarea>
+                <textarea name="mensaje" placeholder="Cuéntanos brevemente tu necesidad (ej. auditoría, política de datos, etc.)" required></textarea>
                 <i class="fa-solid fa-pencil"></i>
             </div>
 
             <!-- Checkbox -->
             <div class="checkbox-group">
                 <input type="checkbox" name="aceptacion" id="aceptacion" required>
-                <label for="aceptacion">Acepto el <a href="#">tratamiento de mis datos</a> para ser contactado(a) por Legal Shield.</label>
+                <label for="aceptacion">Acepto el <a href="https://legalshield.com.co/politica-de-tratamiento-de-datos/" target="_blank" rel="noopener noreferrer">tratamiento de mis datos</a> para ser contactado(a) por Legal Shield.</label>
             </div>
 
             <!-- Submit Button -->
@@ -81,7 +88,8 @@
                 Gracias por tu mensaje. Se ha enviado.
             </div>
         </form>
-    </main>
+        </main>
+    </div>
 
     <script src="script.js"></script>
 </body>
