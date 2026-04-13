@@ -1,0 +1,248 @@
+
+        /* Estilos Base y Tipografía */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #eef2f6; /* Color de fondo por defecto (gray-100) */
+            transition: background-color 0.5s ease-in-out; /* Transición para el fondo del body */
+        }
+        
+        body {
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+
+        /* Definición de clases para el fondo del body (Colores pastel de Tailwind -50) */
+        .bg-theme-recoleccion { background-color: #ecfdf5; } /* green-50 */
+        .bg-theme-almacenamiento { background-color: #fffdf2; } /* yellow-50 */
+        .bg-theme-circulacion { background-color: #eff6ff; } /* blue-50 */
+        .bg-theme-eliminacion { background-color: #fef2f2; } /* red-50 */
+        .bg-theme-transmision { background-color: #faf5ff; } /* purple-50 */
+        .bg-theme-resumen { background-color: #eef2ff; } /* indigo-50 */
+        
+        /* Estilo para el campo en modo vertical (ocupa el 100% del ancho) */
+        .field {
+            width: 100%;
+            padding-bottom: 0.75rem; 
+        }
+        .field label {
+            font-size: 0.95rem;
+            line-height: 1.4;
+            padding: 0.3rem 0.6rem; 
+            border-radius: 0.25rem;
+            font-weight: 600;
+            transition: color 0.3s ease; 
+        }
+        
+        /* Estilos generales para las respuestas */
+        .field-content {
+            font-size: 1.0rem;
+            padding: 0.3rem 0.6rem 0.3rem 0.6rem; 
+            margin-bottom: 0.5rem;
+            color: #1f2937; /* Color por defecto (gris oscuro) */
+            transition: color 0.3s ease; 
+        }
+        
+        /* Estilo específico para la respuesta de texto plano */
+        .field-content p {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Estilos para listas dentro de las respuestas */
+        .field-content ul {
+            list-style: disc;
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+        .field-content ul li {
+            margin-bottom: 4px;
+        }
+
+        /* Estilo para las etiquetas (tags) */
+        .data-tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.6rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.3rem;
+            border-radius: 9999px; 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            transition: all 0.3s ease-in-out; 
+            cursor: default; 
+        }
+        
+        /* --- Estilos del Acordeón (COLLAPSE/EXPAND) --- */
+
+        /* Estilo general del contenedor de cada sección del acordeón */
+        .accordion-item {
+            border-bottom: 1px solid #e5e7eb; 
+            padding-bottom: 1rem;
+            padding-top: 1rem;
+            margin-bottom: 0;
+            cursor: pointer;
+        }
+
+        /* Estilo del encabezado (la parte cliqueable) */
+        .accordion-header {
+            display: block;
+            list-style: none; 
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Para ocultar el marcador nativo del details en navegadores */
+        .accordion-item > summary::-webkit-details-marker {
+            display: none;
+        }
+
+        /* Indicador animado (Flecha) */
+        .accordion-header::after {
+            content: '▼';
+            transition: transform 0.3s ease;
+            color: #4b5563;
+        }
+
+        /* Gira la flecha cuando el detalle está abierto */
+        .accordion-item[open] .accordion-header::after {
+            transform: rotate(180deg);
+        }
+
+        /* Contenido del acordeón (para la animación smooth) */
+        .accordion-content {
+            overflow: hidden;
+            padding-top: 1rem;
+        }
+
+        /* --- Estilos Específicos del Filtro (Círculos) --- */
+        .filter-circle {
+            width: 1.25rem; 
+            height: 1.25rem; 
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            opacity: 0.5; 
+        }
+
+        /* Estilo para los filtros activos (Minimalista: solo opacidad y escala) */
+        .filter-circle.active-filter {
+            border-color: transparent; 
+            opacity: 1; 
+            transform: scale(1.1); 
+        }
+        
+        /* Estilo para los filtros ocultos */
+        .hidden-filter {
+            display: none !important;
+        }
+
+        /* --- Tema de color de contenido por Sección Abierta --- */
+        
+        /* RECOLECCIÓN (Verde) */
+        .theme-recoleccion[open] .field :is(label, .field-content) { color: #065F46; } /* Dark Green */
+
+        /* ALMACENAMIENTO (Amarillo/Amber) */
+        .theme-almacenamiento[open] .field :is(label, .field-content) { color: #A16207; } 
+
+        /* CIRCULACIÓN (Azul) */
+        .theme-circulacion[open] .field :is(label, .field-content) { color: #1D4ED8; } 
+        
+        /* ELIMINACIÓN (Rojo) */
+        .theme-eliminacion[open] .field :is(label, .field-content) { color: #B91C1C; } 
+        
+        /* TRANSMISIÓN (Púrpura) */
+        .theme-transmision[open] .field :is(label, .field-content) { color: #7E22CE; } 
+        
+        /* RESUMEN (Índigo) */
+        .theme-resumen[open] .field :is(label, .field-content) { color: #4338CA; } /* Indigo 700 */
+
+        /* Estilo para la tabla de recolección */
+        .storage-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            table-layout: fixed; /* Asegura que el ancho de columna se respete */
+        }
+        .storage-table th, .storage-table td {
+            padding: 8px 12px;
+            text-align: left;
+            border: 1px solid #d1d5db; /* gray-300 */
+            width: 50%; /* Establece el ancho de columna fijo */
+        }
+        .storage-table th {
+            background-color: #f3f4f6; /* gray-100 */
+            font-weight: 700;
+        }
+        .storage-table td {
+            background-color: #ffffff;
+        }
+
+        /* --- Estilos para las Cards de Información --- */
+        
+        /* Base para todas las cards de las secciones */
+        .info-card {
+            display: flex;
+            flex-direction: column;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            height: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08); /* Sombra suave */
+        }
+        .info-card:hover {
+             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+        }
+        .info-card-icon {
+            margin-bottom: 0.5rem;
+        }
+        .info-card-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .info-card-content {
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        /* Tema ALMACENAMIENTO (Amarillo/Amber) */
+        .theme-almacenamiento .info-card {
+            border: 1px solid #fde68a; /* yellow-200 */
+            background-color: #fffbeb; /* yellow-50 */
+        }
+        .theme-almacenamiento .info-card-icon { color: #d97706; } 
+        .theme-almacenamiento .info-card-label { color: #b45309; } 
+        .theme-almacenamiento .info-card-content { color: #854d0e; } 
+
+        /* Tema CIRCULACIÓN (Azul) */
+        .theme-circulacion .info-card {
+            border: 1px solid #bfdbfe; /* blue-200 */
+            background-color: #eff6ff; /* blue-50 */
+        }
+        .theme-circulacion .info-card-icon { color: #2563eb; } 
+        .theme-circulacion .info-card-label { color: #1e40af; } 
+        .theme-circulacion .info-card-content { color: #1e3a8a; } 
+
+        /* Tema ELIMINACIÓN (Rojo) */
+        .theme-eliminacion .info-card {
+            border: 1px solid #fecaca; /* red-200 */
+            background-color: #fef2f2; /* red-50 */
+        }
+        .theme-eliminacion .info-card-icon { color: #dc2626; } 
+        .theme-eliminacion .info-card-label { color: #b91c1c; } 
+        .theme-eliminacion .info-card-content { color: #991b1b; } 
+        
+        /* Tema RESUMEN (Índigo) */
+        .theme-resumen .info-card {
+            border: 1px solid #c7d2fe; /* indigo-200 */
+            background-color: #eef2ff; /* indigo-50 */
+        }
+        .theme-resumen .info-card-icon { color: #4f46e5; } /* indigo-600 */
+        .theme-resumen .info-card-label { color: #4338CA; } /* indigo-700 */
+        .theme-resumen .info-card-content { color: #3730A3; } /* indigo-800 */

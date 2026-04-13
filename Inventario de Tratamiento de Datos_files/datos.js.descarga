@@ -1,0 +1,492 @@
+// datos.js
+// Helpers para normalizar texto del CSV
+const splitComas = (txt = '') =>
+  txt.replace(/\n/g, ',').split(',').map(t => t.trim()).filter(Boolean);
+
+const splitGuionesYComas = (txt = '') =>
+  txt.replace(/\n/g, ',').split(/,|-/).map(t => t.trim()).filter(Boolean);
+
+// Finalidades generales (son las mismas en casi todos)
+// Finalidades generales (actualizadas)
+const finalidadesGenerales = [
+  "Gestionar integralmente su inscripción, pago y participación en eventos y programas académicos; remitirle las memorias, certificaciones y material de apoyo derivados; así como capturar y divulgar su imagen (foto, video o voz) con fines institucionales, promocionales o documentales, y evaluar su satisfacción con el servicio.",
+
+  "Contactar a través de medios físicos, electrónicos y/o digitales (incluyendo correo, SMS, WhatsApp, redes sociales, teléfono y demás aplicativos web) para gestionar trámites, notificaciones, facturación y la actualización de sus datos; así como para el envío de información comercial, publicitaria, boletines e invitaciones a eventos y servicios ofrecidos por la CCB o sus aliados estratégicos.",
+
+  "Gestionar el control de ingreso, seguridad y permanencia en las instalaciones y eventos de la CCB, mediante la captura y monitoreo de datos biométricos (rostro, voz) y sistemas de videovigilancia.",
+
+  "Realizar actividades de inteligencia de negocios, minería de datos, analítica predictiva y encuestas de satisfacción para construir perfiles comerciales, evaluar la calidad de los servicios y medir el impacto de nuestros eventos; con el fin de diseñar ofertas personalizadas, anticipar necesidades del mercado y generar planes de mejoramiento continuo y prospectiva sectorial.",
+
+  "Transferir y transmitir sus datos a aliados y terceros (nacionales o internacionales) para fines de logística, procesamiento, mercadeo y la realización conjunta de eventos, programas de fortalecimiento empresarial y el desarrollo de sus funciones y objeto social.",
+
+  "Gestionar la interacción del Titular con los canales de atención virtual, incluyendo el uso de asistentes basados en inteligencia artificial (Chatbots), plataformas de video/teleconferencia y herramientas de automatización; permitiendo la grabación, transcripción y procesamiento de estas interacciones para fines de calidad, soporte técnico y mejora del entrenamiento de los sistemas tecnológicos.",
+
+  "Recolectar y consultar información personal del Titular y de su grupo familiar inmediato (cónyuge, compañeros permanentes y parientes dentro de los grados de ley) con el fin exclusivo de validar inhabilidades, incompatibilidades, conflictos de interés y realizar la debida diligencia en los procesos de selección, vinculación y contratación de colaboradores, empleados y proveedores, así como en el nombramiento o elección de miembros de Junta Directiva y cargos de dirección.",
+
+  "Detectar y gestionar incidentes de seguridad, prevenir fraudes y proteger la integridad de la información frente a accesos no autorizados.",
+
+  "Capturar, fijar, editar, reproducir y comunicar públicamente la imagen, voz, video y testimonios del Titular obtenidos en eventos, ferias, entrevistas o visitas a las instalaciones; con el fin de utilizarlos en material publicitario, memorias institucionales, redes sociales, sitios web y campañas promocionales de la Entidad, publicación que podrá efectuarse de manera directa o a través de un tercero que se designe para tal fin. Esta autorización conlleva la cesión gratuita de los derechos patrimoniales de imagen, sin límite territorial ni temporal, y sin que ello genere remuneración alguna a favor del Titular.",
+
+  "Gestionar integralmente el ciclo de vida del talento humano, incluyendo: (i) procesos de selección, visitas domiciliarias, estudios de seguridad y verificación de referencias y antecedentes; (ii) formalización contractual, afiliación al Sistema de Seguridad Social Integral y gestión de nómina; (iii) ejecución del Sistema de Gestión de Seguridad y Salud en el Trabajo (SG-SST) y manejo de historias clínicas ocupacionales; (iv) programas de bienestar y capacitación extensibles al grupo familiar; y (v) uso de la imagen corporativa y datos biométricos para identificación y seguridad física o lógica.",
+
+  "Gestionar la relación contractual con proveedores y contratistas, incluyendo el estudio de cotizaciones, evaluación de idoneidad, registro contable y tributario, gestión de pagos y facturación; así como consultar y reportar el comportamiento crediticio ante centrales de riesgo y verificar antecedentes en listas restrictivas.",
+
+  "Gestionar el cumplimiento de obligaciones económicas, contables, tributarias y contractuales, lo cual abarca: (i) el cálculo, liquidación y pago de nómina, honorarios, prestaciones sociales y seguridad social integral; (ii) la transmisión de datos a entidades financieras para la dispersión de fondos y pagos; (iii) el reporte de información a autoridades de control fiscal y parafiscal (como DIAN y UGPP); y (iv) la emisión y envío de certificados de ingresos y retenciones.",
+
+  "Recolectar, almacenar y tratar los datos personales de los hijos menores de edad de los colaboradores, previa autorización de sus representantes legales, con la finalidad exclusiva de gestionar su afiliación al Sistema de Seguridad Social Integral (EPS, Cajas de Compensación), otorgar beneficios de bienestar extralegales, escolaridad y realizar actividades de integración familiar; garantizando que dicho tratamiento responda siempre al interés superior del menor y respete sus derechos fundamentales.",
+
+  "Gestionar la inscripción, participación y registro audiovisual de menores en actividades de la CCB, garantizando la autorización del representante legal y el derecho del menor a ser escuchado."
+];
+
+const finalidadesEspeciales = [
+  "Gestionar integralmente su inscripción, pago y participación en eventos y programas académicos; remitirle las memorias, certificaciones y material de apoyo derivados; así como capturar y divulgar su imagen (foto, video o voz) con fines institucionales, promocionales o documentales, y evaluar su satisfacción con el servicio.",
+
+  "Contactar a través de medios físicos, electrónicos y/o digitales (incluyendo correo, SMS, WhatsApp, redes sociales, teléfono y demás aplicativos web) para gestionar trámites, notificaciones, facturación y la actualización de sus datos; así como para el envío de información comercial, publicitaria, boletines e invitaciones a eventos y servicios ofrecidos por la CCB o sus aliados estratégicos.",
+
+  "Gestionar el control de ingreso, seguridad y permanencia en las instalaciones y eventos de la CCB, mediante la captura y monitoreo de datos biométricos (rostro, voz) y sistemas de videovigilancia.",
+  
+  "Garantizar la seguridad de las personas, bienes e instalaciones de la CCB mediante la implementación de controles de acceso físicos, digitales o biométricos (validación de identidad) y sistemas de videovigilancia.",
+
+  "Realizar actividades de inteligencia de negocios, minería de datos, analítica predictiva y encuestas de satisfacción para construir perfiles comerciales, evaluar la calidad de los servicios y medir el impacto de nuestros eventos; con el fin de diseñar ofertas personalizadas, anticipar necesidades del mercado y generar planes de mejoramiento continuo y prospectiva sectorial.",
+
+  "Transferir y transmitir sus datos a aliados y terceros (nacionales o internacionales) para fines de logística, procesamiento, mercadeo y la realización conjunta de eventos, programas de fortalecimiento empresarial y el desarrollo de sus funciones y objeto social.",
+
+  "Gestionar la interacción del Titular con los canales de atención virtual, incluyendo el uso de asistentes basados en inteligencia artificial (Chatbots), plataformas de video/teleconferencia y herramientas de automatización; permitiendo la grabación, transcripción y procesamiento de estas interacciones para fines de calidad, soporte técnico y mejora del entrenamiento de los sistemas tecnológicos.",
+
+  "Recolectar y consultar información personal del Titular y de su grupo familiar inmediato (cónyuge, compañeros permanentes y parientes dentro de los grados de ley) con el fin exclusivo de validar inhabilidades, incompatibilidades, conflictos de interés y realizar la debida diligencia en los procesos de selección, vinculación y contratación de colaboradores, empleados y proveedores, así como en el nombramiento o elección de miembros de Junta Directiva y cargos de dirección.",
+
+  "Detectar y gestionar incidentes de seguridad, prevenir fraudes y proteger la integridad de la información frente a accesos no autorizados.",
+
+  "Capturar, fijar, editar, reproducir y comunicar públicamente la imagen, voz, video y testimonios del Titular obtenidos en eventos, ferias, entrevistas o visitas a las instalaciones; con el fin de utilizarlos en material publicitario, memorias institucionales, redes sociales, sitios web y campañas promocionales de la Entidad, publicación que podrá efectuarse de manera directa o a través de un tercero que se designe para tal fin. Esta autorización conlleva la cesión gratuita de los derechos patrimoniales de imagen, sin límite territorial ni temporal, y sin que ello genere remuneración alguna a favor del Titular.",
+
+  "Gestionar integralmente el ciclo de vida del talento humano, incluyendo: (i) procesos de selección, visitas domiciliarias, estudios de seguridad y verificación de referencias y antecedentes; (ii) formalización contractual, afiliación al Sistema de Seguridad Social Integral y gestión de nómina; (iii) ejecución del Sistema de Gestión de Seguridad y Salud en el Trabajo (SG-SST) y manejo de historias clínicas ocupacionales; (iv) programas de bienestar y capacitación extensibles al grupo familiar; y (v) uso de la imagen corporativa y datos biométricos para identificación y seguridad física o lógica.",
+
+  "Gestionar la relación contractual con proveedores y contratistas, incluyendo el estudio de cotizaciones, evaluación de idoneidad, registro contable y tributario, gestión de pagos y facturación; así como consultar y reportar el comportamiento crediticio ante centrales de riesgo y verificar antecedentes en listas restrictivas.",
+
+  "Gestionar el cumplimiento de obligaciones económicas, contables, tributarias y contractuales, lo cual abarca: (i) el cálculo, liquidación y pago de nómina, honorarios, prestaciones sociales y seguridad social integral; (ii) la transmisión de datos a entidades financieras para la dispersión de fondos y pagos; (iii) el reporte de información a autoridades de control fiscal y parafiscal (como DIAN y UGPP); y (iv) la emisión y envío de certificados de ingresos y retenciones.",
+
+  "Recolectar, almacenar y tratar los datos personales de los hijos menores de edad de los colaboradores, previa autorización de sus representantes legales, con la finalidad exclusiva de gestionar su afiliación al Sistema de Seguridad Social Integral (EPS, Cajas de Compensación), otorgar beneficios de bienestar extralegales, escolaridad y realizar actividades de integración familiar; garantizando que dicho tratamiento responda siempre al interés superior del menor y respete sus derechos fundamentales.",
+
+  "Gestionar la inscripción, participación y registro audiovisual de menores en actividades de la CCB, garantizando la autorización del representante legal y el derecho del menor a ser escuchado."
+];
+
+
+// Inferir tipo de dato (público/privado/sensible) según nombre y tipo general
+const inferTipoDato = (nombre, tipoGeneral) => {
+  const base = (tipoGeneral || '').toLowerCase();
+  const lower = (nombre || '').toLowerCase();
+
+  // Palabras clave de datos sensibles
+  const keywordsSensibles = [
+    'salud', 'médic', 'medic', 'historia clini', 'incapacidad',
+    'discapacidad', 'biometr', 'huella', 'rostro', 'facial',
+    'video', 'fotograf', 'voz', 'imágenes', 
+    'grupo sangu', 'etnia', 'orientación', 'religión',
+    'antecedentes', 'procesos juridicos', 'procesos jurídicos', 'judiciales', 'datos biom','historias clíni'
+  ];
+
+  // Palabras clave de datos públicos típicos (registros, nombre, profesión, etc.)
+  const keywordsPublicos = [
+    'nombre', 'razón social', 'razon social',
+    'registro civil', 'registros civiles', 'nacionalidad', 'fecha de nacimiento', 'estado civil', 'cedula', 'número de documento', 'documento de identificación',
+    'tarjeta profesional', 'sexo', 'edad', 'género', 'número de identificación', 'tarjeta de identidad', 'Cédula de Extranjeria',
+    'permiso de permanencia',
+    'información registral', 'informe registral',
+    'rut'
+  ];
+
+  // 1. Priorizar siempre lo SENSIBLE
+  if (keywordsSensibles.some(k => lower.includes(k))) {
+    return 'sensible';
+  }
+
+  // 2. Datos típicamente PÚBLICOS (según registros públicos)
+  if (keywordsPublicos.some(k => lower.includes(k))) {
+    return 'publico';
+  }
+
+  // 3. Si el tipo general declarado es público, todo público
+  if (base.startsWith('publ')) return 'publico';
+
+  // 4. Si el tipo general es sensible o privado, el resto va como privado
+  if (base.startsWith('sens')) return 'privado';
+  if (base.startsWith('priv')) return 'privado';
+
+  // 5. Por defecto, privado (enfoque conservador)
+  return 'privado';
+};
+
+// Construye arreglo de { nombre, tipo }
+const construirDatos = (texto, tipoGeneral) =>
+  splitComas(texto).map(nombre => ({
+    nombre,
+    tipo: inferTipoDato(nombre, tipoGeneral)
+  }));
+
+// ====================
+//   PROCESOS (CSV)
+// ====================
+
+const procesos = {
+  // 1. VICEPRESIDENCIA ADMINISTRATIVA Y FINANCIERA
+  vp_admin_fin: {
+    nombre: 'Vicepresidencia Administrativa y Financiera',
+    titulares: splitComas('Colaboradores, Aprendiz SENA, Profesional Universitario, Judicante, Contratistas, Usuarios, Proveedores, Comerciantes, Aliados, Miembros de Junta Directiva, Afiliados, Servidores Públicos, Oferentes, Visitantes, Ciudadanía en General, Menor de Edad'),
+    datos: construirDatos(
+      'Nombre o Razón Social, Cédula, Correo Electrónico, Número de teléfono, Dirección, Nacionalidad, Fecha de Nacimiento, Estado Civil, Número de Hijos, Libreta Militar, Pasatiempos, Formación Académica, Seguridad Social, Cuentas Bancarias, Referencias Comerciales y Laborales, Actividad Económica, Información Financiera y Tributaria, Profesión u Oficio, Información Médica, Contactos de Emergencia, Imágenes, Videos, Consulta de Antecedentes Judiciales y Laborales, Procesos Jurídicos de los Colaboradores, Datos Biométricos, Incapacidades, Historias Clínicas, Recomendaciones Médicas, Hojas de Vida',
+      'Sensibles'
+    ),
+    entradas: splitComas('Módulo de evento - Página web -Survey Monkey -Correo electrónico -Portal de Empleo'),
+    reposRecolect: {
+      fisico: [],
+      digital: [
+        'Módulo de eventos',
+        'Página web',
+        'Survey Monkey',
+        'Correo electrónico',
+        'Portal de empleo'
+      ]
+    },
+    autorizacion: {
+      estado: 'si',
+      detalle: ''
+    },
+    finalidades: finalidadesGenerales,
+    lugarAutorizaciones: {
+      fisico: splitGuionesYComas(),
+      digital: splitGuionesYComas('DocuWare-Central de Protección de Datos-OneDrive-Acronis')
+    },
+    lugarDatos: splitGuionesYComas('DocuWare, Central de Protección de Datos, Acronis-'),
+    lugarBackup: splitComas('Acronis o Microsoft'),
+    areasInvolucradas: splitGuionesYComas('Crecimiento y Sostenibilidad Global- Capital Humano Empresarial- Formulación de Proyectos- Registro y Redes Empresariales- Mercadeo y Publicidad- Transformación Digital- Competitividad Regional- Fortalecimiento Empresarial Mipymes - Auditoria Interna'),
+    frecuenciaEliminacion: 'A petición del titular',
+    actaEliminacion: {
+      existe: true,
+      metodologia: 'Se cuenta con acta que deja constancia de la eliminación de datos personales según la metodología institucional.',
+      lugar: splitComas('OneDrive')
+    },
+    comparteInfo: {
+      estado: 'si',
+      detalle: 'Se comparten datos con terceros para el desarrollo de funciones camerales, contractuales y de gestión del talento humano.',
+      terceros: splitGuionesYComas('Firma Externa de Procesos de Selección- PSA Asesores- Entidades Promotoras de Salud (ARL — EPS — Fondos de Pensiones)- Ministerio de Trabajo- Juzgados- Contraloría- Registraduría- SuperSociedades- Abogados Laboralistas- Certificación Great Place to Work- Convenios Comerciales (Servicios Funerarios — Medicina Prepagada — Entidades Bancarias)- Cajasan- Policía Nacional- IPS- Proveedores para Asesoría Técnica al SGSST- Fisioterapeuta de Riesgo Biomecánico- Cibo y Tropical Trip- UGPP- DIAN- Temporing')
+    },
+    contratoTransmision: true
+  },
+
+  // 2. DIRECCIÓN DE FORMULACIÓN DE PROYECTOS
+  dir_formulacion: {
+    nombre: 'Dirección de Formulación de Proyectos',
+    titulares: splitComas('Empresarios, Emprendedores, Familias Rurales, Vecinos, Campesinos, Sociedad Civil, Representante Legal, Comerciantes y No Comerciantes'),
+    datos: construirDatos(
+      'Nombre, Cédula, Dirección, Correo electrónico, Número de teléfono, Sexo, Nacionalidad, Estado Socioeconómico, Ingresos, Nivel Educativo, Edad, Fecha de Nacimiento',
+      'Privado'
+    ),
+    entradas: splitGuionesYComas('Registro de asistentes-SurveyMonkey-Módulo de eventos, Documento físico'),
+    reposRecolect: {
+      fisico: ['Documento físico'],
+      digital: splitComas('Registro de asistentes, Survey Monkey, Modulo de eventos'),
+    },
+    autorizacion: {
+      estado: 'si',
+      detalle: ''
+    },
+    finalidades: finalidadesGenerales,
+    lugarAutorizaciones: {
+      fisico: [],
+      digital: splitComas('OneDrive')
+    },
+    lugarDatos: splitComas('OneDrive'),
+    lugarBackup: splitComas('Acronis o Microsoft'),
+    areasInvolucradas: splitGuionesYComas('Crecimiento y sostenibilidad global- Capital humano empresarial- Formulación de Proyectos- Registro y Redes Empresariales- Mercadeo y Publicidad- Transformación Digital-Competitividad Regional- Fortalecimiento Empresarial Mipymes- Vicepresidencia Administrativa y Financiera- Auditoria Interna'),
+    frecuenciaEliminacion: 'A petición del titular',
+    actaEliminacion: {
+      existe: true,
+      metodologia: 'Sí',
+      lugar: splitComas('OneDrive')
+    },
+    comparteInfo: {
+      estado: 'si',
+      detalle: '',
+      terceros: splitGuionesYComas('Acronis-Getecoob-Saleforce')
+    },
+    contratoTransmision: true
+  },
+
+  // 3. VICEPRESIDENCIA TRANSFORMACIÓN DIGITAL
+  vp_transformacion_digital: {
+    nombre: 'Vicepresidencia de Transformación Digital',
+    titulares: splitComas('Proveedores'),
+    datos: construirDatos(
+      'Nombre o Razón Social, Cédula , Correo Electrónico, Número de teléfono, Dirección, Seguridad Social, Información Financiera, Referencias Comerciales y Laborales, Actividad Económica, Información Financiera, Profesión u Oficio',
+      'Privado'
+    ),
+    entradas: ['Módulo de evento', 'Página web', 'Survey Monkey', 'Correo electrónico', 'Documentos físicos', 'Call center', 'Aplicativos web (Facebook, Instagram, LinkedIn, WhatsApp)'],
+    reposRecolect: {
+      fisico: ['Documentos físicos'],
+      digital: ['Módulo de evento', 'Página web', 'Survey Monkey', 'Correo electrónico',  'Call center', 'Aplicativos web (Facebook, Instagram, LinkedIn, WhatsApp)'],
+    },
+    autorizacion: {
+      estado: 'no',
+      detalle: 'Se indica que por correo electrónico puede no contarse siempre con autorización expresa de tratamiento.'
+    },
+    finalidades: finalidadesGenerales,
+    lugarAutorizaciones: {
+      fisico: splitGuionesYComas(),
+      digital: splitGuionesYComas('DocuWare-Central de Protección de Datos-OneDrive-Acronis')
+    },
+    lugarDatos: splitGuionesYComas('DocuWare, Central de Protección de Datos, Acronis-'),
+    lugarBackup: splitComas('Acronis o Microsoft'),
+     areasInvolucradas: splitGuionesYComas('Crecimiento y sostenibilidad global- Capital humano empresarial- Formulación de Proyectos- Registro y Redes Empresariales- Mercadeo y Publicidad- Transformación Digital-Competitividad Regional- Fortalecimiento Empresarial Mipymes- Vicepresidencia Administrativa y Financiera- Auditoria Interna'),
+    frecuenciaEliminacion: 'A petición del titular',
+    actaEliminacion: {
+      existe: true,
+      metodologia: 'Se cuenta con acta de eliminación gestionada en OneDrive.',
+      lugar: splitComas('OneDrive')
+    },
+    comparteInfo: {
+      estado: 'si',
+      detalle: 'Se comparte información con terceros vinculados a servicios de nube, soporte y call center.',
+      terceros: splitComas('Acronis-Call center')
+    },
+    contratoTransmision: true
+  },
+
+  // 4. VICEPRESIDENCIA DE CRECIMIENTO Y SOSTENIBILIDAD GLOBAL
+  vp_crecimiento_sostenibilidad: {
+    nombre: 'Vicepresidencia de Crecimiento y Sostenibilidad Global',
+    titulares: splitComas('Representantes Legales, Colaboradores, Proveedores, Aliados, Cooperantes, Comerciantes'),
+    datos: construirDatos(
+      'Nombre, Cédula, Número de teléfono, Correo Electrónico, Dirección, Registros Faciales, Información Financiera, Rereferencias Comerciales y Laborales, Seguridad Social',
+      'Sensibles'
+    ),
+    entradas: ['Módulo de evento', 'Página web', 'Survey Monkey', 'Correo electrónico', 'Documentos físicos', 'Call center', 'Aplicativos web (Facebook, Instagram, LinkedIn, WhatsApp)'],
+    reposRecolect: {
+      fisico: ['Documentos físicos'],
+      digital: ['Módulo de evento', 'Página web', 'Survey Monkey', 'Correo electrónico',  'Call center', 'Aplicativos web (Facebook, Instagram, LinkedIn, WhatsApp)'],
+    },
+    autorizacion: {
+      estado: 'no',
+      detalle: 'Se indica “No: WhatsApp” como canal donde no se cuenta con autorización expresa.'
+    },
+    finalidades: finalidadesGenerales,
+    lugarAutorizaciones: {
+      fisico: splitGuionesYComas(),
+      digital: splitGuionesYComas('DocuWare-Central de Protección de Datos-OneDrive-Acronis')
+    },
+    lugarDatos: splitGuionesYComas('DocuWare, Central de Protección de Datos, Acronis-'),
+    lugarBackup: splitComas('Acronis o Microsoft'),
+     areasInvolucradas: splitGuionesYComas('Crecimiento y sostenibilidad global- Capital humano empresarial- Formulación de Proyectos- Registro y Redes Empresariales- Mercadeo y Publicidad- Transformación Digital-Competitividad Regional- Fortalecimiento Empresarial Mipymes- Vicepresidencia Administrativa y Financiera- Auditoria Interna'),
+    frecuenciaEliminacion: 'A petición del titular',
+    actaEliminacion: {
+      existe: true,
+      metodologia: 'Se cuenta con acta de eliminación registrada en OneDrive.',
+      lugar: splitComas('OneDrive')
+    },
+    comparteInfo: {
+      estado: 'si',
+      detalle: 'Se comparte información con entidades públicas y privadas con las que se tienen contratos o convenios.',
+      terceros: splitComas('Entidades públicas y/o privadas con las que se tiene algún contrato o convenio, Personas Naturales, Consultorías')
+    },
+    contratoTransmision: true
+  },
+
+  // 5. VICEPRESIDENCIA COMPETITIVIDAD REGIONAL ENTORNO PARA LOS NEGOCIOS
+  vp_competitividad_regional: {
+    nombre: 'Vicepresidencia de Competitividad Regional – Entorno para los Negocios',
+    titulares: splitComas('Comerciantes, Líderes Comunitarios, Ciudadanía en General, Funcionarios Públicos, Colaboradores, Directivos de Universidades, Cooperantes, Menores de Edad, Representantes Legales, Proveedores, Aliados'),
+    datos: construirDatos(
+      'Nombre, Número de teléfono, Correo Electrónico, Dirección, Cédula, Edad, Sexo, Cargo, Condición Socioeconómica, Imágenes, Video, Voz, Tarjeta de Identidad, Registro Civil, Seguridad Social, Información Financiera, Referencias Comerciales y Laborales',
+      'Sensibles'
+    ),
+    entradas: ['Módulo de evento', 'Página web', 'Survey Monkey', 'Correo electrónico', 'Documentos físicos', 'Call center', 'Aplicativos web (Facebook, Instagram, LinkedIn, WhatsApp)'],
+    reposRecolect: {
+      fisico: ['Documentos físicos'],
+      digital: ['Módulo de evento', 'Página web', 'Survey Monkey', 'Correo electrónico',  'Call center', 'Aplicativos web (Facebook, Instagram, LinkedIn, WhatsApp)'],
+    },
+    autorizacion: {
+      estado: 'no',
+      detalle: 'Se detalla “No: WhatsApp, correo electrónico” como canales sin autorización expresa.'
+    },
+    finalidades: finalidadesGenerales,
+    lugarAutorizaciones: {
+      fisico: splitGuionesYComas(),
+      digital: splitGuionesYComas('DocuWare-Central de Protección de Datos-OneDrive-Acronis')
+    },
+    lugarDatos: splitGuionesYComas('DocuWare, Central de Protección de Datos, Acronis-'),
+    lugarBackup: splitComas('Acronis o Microsoft'),
+     areasInvolucradas: splitGuionesYComas('Crecimiento y sostenibilidad global- Capital humano empresarial- Formulación de Proyectos- Registro y Redes Empresariales- Mercadeo y Publicidad- Transformación Digital-Competitividad Regional- Fortalecimiento Empresarial Mipymes- Vicepresidencia Administrativa y Financiera- Auditoria Interna'),
+    frecuenciaEliminacion: 'A petición del titular',
+    actaEliminacion: {
+      existe: true,
+      metodologia: 'Se cuenta con acta de eliminación gestionada en OneDrive.',
+      lugar: splitComas('OneDrive')
+    },
+    comparteInfo: {
+      estado: 'si',
+      detalle: 'Se comparten datos con entidades públicas, privadas y aliados para la realización de programas y eventos.',
+      terceros: splitGuionesYComas('Sequa- Cámaras de Comercio Nacionales o Internacionales- Entidades Públicas y Privadas- Universidades- Bibliotecaria (Persona Natural)- Walboo- Agencia Simétrica- Contratistas- Consultores Externos- Agencias de Destino')
+    },
+    contratoTransmision: true
+  },
+
+  // 6. VICEPRESIDENCIA DE CAPITAL HUMANO EMPRESARIAL
+  vp_capital_humano: {
+    nombre: 'Vicepresidencia de Capital Humano Empresarial',
+    titulares: splitComas('Consultor Persona Natural o Juridica -  Profesor, Estudiantes de Colegios,  Estudiantes de Formación, Docentes de Colegios Oficiales, Comerciantes, Ciudadanía General,  Funcionarios Públicos, Colaboradores,  Directivos de Universidades, Cooperantes, Menores de Edad, Representante Legales, Proveedores,  Aliados'),
+    datos: construirDatos(
+      'Nombre, Cédula, Número de teléfono, Dirección, Ciudad, Correo Electrónico, Cargo, Profesión, Empresa, Trayectoria Laboral, Nivel Académico, Información financiera, Condición Socioeconómica, Imágenes, Voz, Video, Tarjeta de Identidad, Registro Civil,  Seguridad Social, Referencias Comerciales y Laborales',
+      'Sensibles'
+    ),
+    entradas: ['Módulo de evento', 'Página web', 'Survey Monkey', 'Correo electrónico', 'Documentos físicos', 'Call center', 'Aplicativos web (Facebook, Instagram, LinkedIn, WhatsApp)'],
+    reposRecolect: {
+      fisico: ['Documentos físicos'],
+      digital: ['Módulo de evento', 'Página web', 'Survey Monkey', 'Correo electrónico',  'Call center', 'Aplicativos web (Facebook, Instagram, LinkedIn, WhatsApp)'],
+    },
+    autorizacion: {
+      estado: 'no',
+      detalle: 'Se indica que en WhatsApp y correo electrónico puede no contarse con autorización expresa.'
+    },
+    finalidades: finalidadesEspeciales,
+    lugarAutorizaciones: {
+      fisico: splitGuionesYComas(),
+      digital: splitGuionesYComas('DocuWare-Central de Protección de Datos-OneDrive-Acronis')
+    },
+    lugarDatos: splitGuionesYComas('DocuWare, Central de Protección de Datos, Acronis-'),
+    lugarBackup: splitComas('Acronis o Microsoft'),
+    areasInvolucradas: splitGuionesYComas('Crecimiento y sostenibilidad global- Capital humano empresarial- Formulación de Proyectos- Registro y Redes Empresariales- Mercadeo y Publicidad- Transformación Digital-Competitividad Regional- Fortalecimiento Empresarial Mipymes- Vicepresidencia Administrativa y Financiera- Auditoria Interna'),
+    frecuenciaEliminacion: 'A petición del titular',
+    actaEliminacion: {
+      existe: true,
+      metodologia: 'Se cuenta con acta de eliminación almacenada en OneDrive.',
+      lugar: splitComas('OneDrive')
+    },
+    comparteInfo: {
+      estado: 'si',
+      detalle: 'Se comparten datos con instituciones de educación superior y consultores.',
+      terceros: splitComas('Universidades, Consultores')
+    },
+    contratoTransmision: true
+  },
+
+  // 7. DIRECCIONES MERCADEO
+  dir_mercadeo: {
+    nombre: 'Direcciones de Mercadeo',
+    titulares: splitComas('Comerciantes, Ciudadania en General, Colaboradores, Proveedores,  Funcionarios Públicos, Menores de Edad, Representante Legales, Aliados'),
+    datos: construirDatos(
+      'Nombre o Razón Social, Cédula, Correo Electrónico, Número de Teléfono,  Dirección, Seguridad social,  Información Financiera, Referencias Comerciales y Laborales, Profesión u Oficio, Imágenes, Voz, Video, Datos Biométricos, hojas de vida, Tarjeta de Identidad, Registro Civil, Contacto de Emergencia, Información Médica',
+      'Sensibles'
+    ),
+    entradas: ['Módulo de evento', 'Página web', 'Survey Monkey', 'Correo electrónico', 'Documentos físicos', 'Call center', 'Aplicativos web (Facebook, Instagram, LinkedIn, WhatsApp)'],
+    reposRecolect: {
+      fisico: ['Documentos físicos'],
+      digital: ['Módulo de evento', 'Página web', 'Survey Monkey', 'Correo electrónico',  'Call center', 'Aplicativos web (Facebook, Instagram, LinkedIn, WhatsApp)'],
+    },
+    autorizacion: {
+      estado: 'si',
+      detalle: 'Se cuenta con autorización de datos personales para las actividades de mercadeo.'
+    },
+    finalidades: finalidadesGenerales,
+    lugarAutorizaciones: {
+      fisico: splitGuionesYComas(),
+      digital: splitGuionesYComas('DocuWare-Central de Protección de Datos-OneDrive-Acronis')
+    },
+    lugarDatos: splitGuionesYComas('DocuWare, Central de Protección de Datos, Acronis-'),
+    lugarBackup: splitComas('Acronis o Microsoft'),
+    areasInvolucradas: splitGuionesYComas('Crecimiento y sostenibilidad global- Capital humano empresarial- Formulación de Proyectos- Registro y Redes Empresariales- Mercadeo y Publicidad- Transformación Digital-Competitividad Regional- Fortalecimiento Empresarial Mipymes- Vicepresidencia Administrativa y Financiera- Auditoria Interna'),
+    frecuenciaEliminacion: 'A petición del titular',
+    actaEliminacion: {
+      existe: true,
+      metodologia: 'Se cuenta con acta de eliminación almacenada en OneDrive.',
+      lugar: splitComas('OneDrive')
+    },
+    comparteInfo: {
+      estado: 'si',
+      detalle: 'Se comparten datos con agencias de mercadeo, especialmente en temporada de renovación del registro.',
+      terceros: splitComas('Agencias de mercadeo, Temporada de renovación del registro')
+    },
+    contratoTransmision: true
+  },
+
+  // 8. VICEPRESIDENCIA DE REGISTRO Y REDES EMPRESARIALES
+  vp_registro_redes: {
+    nombre: 'Vicepresidencia de Registro y Redes Empresariales',
+    titulares: splitComas('Comerciante Persona Natural, Socios, Representante Legal, Revisor Fiscal,  Accionista (Único en la situación de control), Empleados de Comerciantes, Apoderados Judiciales, Administradores de Establecimientos de Comercio y Agencia, Asociados, Integrantes de Junta Directiva o Consejos de Administracion (Órgano colegiado), Mandatarios por Poderes Generales y Especiales,   Ciudadania General, Firmas de Revisoria Fiscal, Operadores Centro de Conciliación, Información de Menores de Edad, Proveedores,  Funcionarios públicos, Aliados, Beneficiarios'),
+    datos: construirDatos(
+      'Número de Identificación, Tarjeta de identididad, Registros Civiles, Permiso de Permanencia Temportal, Tarjeta Profesional,  Nombre, Número de Teléfono, Correo Eletrónico, Dirección, Información Financiera (estados financieros), Género, Nivel de Educación,  Condición Socioeconómica, Cédula de Extranjeria, Pasaporte,  Seguridad Social, Referencias Comerciales y Laborales, Profesión u Oficio,  Imágenes, Voz,  Video',
+      'Sensibles'
+    ),
+    entradas: ['Módulo de evento', 'Página web', 'Survey Monkey', 'Correo electrónico', 'Documentos físicos', 'Call center', 'Aplicativos web (Facebook, Instagram, LinkedIn, WhatsApp)'],
+    reposRecolect: {
+      fisico: ['Documentos físicos'],
+      digital: ['Módulo de evento', 'Página web', 'Survey Monkey', 'Correo electrónico',  'Call center', 'Aplicativos web (Facebook, Instagram, LinkedIn, WhatsApp)'],
+    },
+    autorizacion: {
+      estado: 'no',
+      detalle: 'Se señala “No: WhatsApp, correo electrónico” como canales sin autorización expresa.'
+    },
+    finalidades: finalidadesGenerales,
+     lugarAutorizaciones: {
+      fisico: splitGuionesYComas(),
+      digital: splitGuionesYComas('DocuWare-Central de Protección de Datos-OneDrive-Acronis')
+    },
+    lugarDatos: splitGuionesYComas('DocuWare, Central de Protección de Datos, Acronis-'),
+    lugarBackup: splitComas('Acronis o Microsoft'),
+    areasInvolucradas: splitGuionesYComas('Crecimiento y sostenibilidad global- Capital humano empresarial- Formulación de Proyectos- Registro y Redes Empresariales- Mercadeo y Publicidad- Transformación Digital-Competitividad Regional- Fortalecimiento Empresarial Mipymes- Vicepresidencia Administrativa y Financiera- Auditoria Interna'),
+    frecuenciaEliminacion: 'A petición del titular',
+    actaEliminacion: {
+      existe: true,
+      metodologia: 'Se cuenta con acta de eliminación almacenada en OneDrive.',
+      lugar: splitComas('OneDrive')
+    },
+    comparteInfo: {
+      estado: 'si',
+      detalle: 'Se comparten datos con entidades del ecosistema registral y judicial.',
+      terceros: splitComas('Confecámaras, Operadores judiciales, Contratista (Atenea), Euleck')
+    },
+    contratoTransmision: true
+  },
+
+  // 9. VICEPRESIDENCIA DE FORTALECIMIENTO EMPRESARIAL MIPYMES
+  vp_fortalecimiento_mipymes: {
+    nombre: 'Vicepresidencia de Fortalecimiento Empresarial Mipymes',
+    titulares: splitComas('Comerciantes Persona Natural, Representante Legal (familiares del respresentante legal), Emprendedores, Beneficiarios, Contratistas,  Proveedor, Aliados,   Empleados de Comerciantes, Menores de Edad, Lideres Comunitarios, Ciudadanía General,  Funcionarios Públicos,   Directivos de Universidades, Cooperantes'),
+    datos: construirDatos(
+      'Nombre, Direccion , Número de Teléfono, Actividad Comercial, Datos Comerciales, Seguridad Social, Información Financiera-Tributaria,  Imágenes, Video, Voz, Condición Socioeconómica, Correo electrónico,  Cédula, Edad, Sexo, Cargo, Referencias Comerciales y laborales',
+      'Sensibles'
+    ),
+    entradas: ['Módulo de evento', 'Página web', 'Survey Monkey', 'Correo electrónico', 'Documentos físicos', 'Call center', 'Aplicativos web (Facebook, Instagram, LinkedIn, WhatsApp)'],
+    reposRecolect: {
+      fisico: ['Documentos físicos'],
+      digital: ['Módulo de evento', 'Página web', 'Survey Monkey', 'Correo electrónico',  'Call center', 'Aplicativos web (Facebook, Instagram, LinkedIn, WhatsApp)'],
+    },
+    autorizacion: {
+      estado: 'no',
+      detalle: 'Se señala que WhatsApp y correo electrónico pueden no contar con autorización expresa del titular.'
+    },
+    finalidades: finalidadesGenerales,
+     lugarAutorizaciones: {
+      fisico: splitGuionesYComas(),
+      digital: splitGuionesYComas('DocuWare-Central de Protección de Datos-OneDrive-Acronis')
+    },
+    lugarDatos: splitGuionesYComas('DocuWare, Central de Protección de Datos, Acronis-'),
+    lugarBackup: splitComas('Acronis o Microsoft'),
+    areasInvolucradas: splitGuionesYComas('Crecimiento y sostenibilidad global- Capital humano empresarial- Formulación de Proyectos- Registro y Redes Empresariales- Mercadeo y Publicidad- Transformación Digital-Competitividad Regional- Fortalecimiento Empresarial Mipymes- Vicepresidencia Administrativa y Financiera- Auditoria Interna'),
+    frecuenciaEliminacion: 'A petición del titular',
+    actaEliminacion: {
+      existe: true,
+      metodologia: 'Se cuenta con acta de eliminación almacenada en OneDrive.',
+      lugar: splitComas('OneDrive')
+    },
+    comparteInfo: {
+      estado: 'si',
+      detalle: 'Se comparten datos con entidades aliadas y convenios para la ejecución de programas Mipymes.',
+      terceros: splitComas('IMEBU, Cajasan, Alcaldía de Piedecuesta, UNAB, INNpulsa, Contratistas y Consultores')
+    },
+    contratoTransmision: true
+  }
+};
+
+
+
+
+
